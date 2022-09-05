@@ -4,19 +4,13 @@ import {fetchCocktails} from "../redux/features/cocktailSlice"
 import {Link} from "react-router-dom"
 
 import type {RootState, AppDispatch} from '../redux/store'
+import {ICocktailList} from '../interfaces'
 
 type Props = {}
-interface ICocktail {
-  id: string,
-  name: string,
-  image: string,
-  info: string,
-  glass: string
-}
 
 const CocktailList = (props: Props) => {
     const {cocktails, loading} = useSelector((state: RootState) => ({...state.app}))
-    const [modifiedCocktail, setModifiedCocktail] = useState<ICocktail[] | []>([]);
+    const [modifieldCocktails, setModifieldCocktails] = useState<ICocktailList[] | []>([]);
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
@@ -25,7 +19,7 @@ const CocktailList = (props: Props) => {
 
     useEffect(() => {
       if(cocktails) {
-        const newCocktails = cocktails.map((item) => {
+        const newCocktails = cocktails.drinks.map((item) => {
           const {idDrink, strDrinkThumb, strAlcoholic, strDrink,strGlass} = item;
           return {
             id: idDrink,
@@ -35,9 +29,9 @@ const CocktailList = (props: Props) => {
             glass: strGlass
           }
         })
-        setModifiedCocktail(newCocktails)
+        setModifieldCocktails(newCocktails)
       } else {
-        setModifiedCocktail([])
+        setModifieldCocktails([])
       }
     }, [cocktails])
 
@@ -51,8 +45,9 @@ const CocktailList = (props: Props) => {
   return (
     <div className='container'>
         <div className="row row-cols-1 row-cols-md-3 g-4">
-          {modifiedCocktail.map((item) => {
+          {modifieldCocktails.map((item) => {
             const {id,name,image,glass,info} = item;
+            console.log(id)
             return (
               <div className="col" key={id}>
                 <div className="card h-2">
